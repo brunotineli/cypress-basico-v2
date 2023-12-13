@@ -1,6 +1,6 @@
 # cypress-basico-v2
 
-[![main](https://github.com/btineli/cypress-basico-v2/actions/workflows/ci.yml/badge.svg)](https://github.com/btineli/cypress-basico-v2/actions)
+[![main](https://github.com/brunotineli/cypress-basico-v2/actions/workflows/ci.yml/badge.svg)](https://github.com/brunotineli/cypress-basico-v2/actions)
 
 Sample project for the basic coure of the Talking About Testing online school.
 
