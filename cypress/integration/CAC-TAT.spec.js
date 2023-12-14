@@ -153,5 +153,86 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.title()
             .should('be.equal', 'Central de Atendimento ao Cliente TAT - Política de privacidade')
     })
+
+    it('exibe mensagem de sucesso 3 segundos', function() {
+        cy.clock()
+        cy.fillMandatoryFieldsAndSubmit(
+            Cypress.env('first_name'),
+            Cypress.env('last_name'),
+            'bruno.tineli@teste.com',
+            'Comments'
+        )
+        cy.get('.success')
+            .should('be.visible')
+
+        cy.tick(2999)
+            cy.get('.success')
+                .should('be.visible')
+
+        cy.tick(1)
+        cy.get('.success')
+            .should('not.be.visible')
+    })
+
+    it('exibe mensagem de erro 3 segundos', function() {
+        cy.clock()
+        cy.fillMandatoryFieldsAndSubmit(
+            Cypress.env('first_name'),
+            Cypress.env('last_name'),
+            'bruno.tineli',
+            'Comments'
+        )
+        cy.get('.error')
+            .should('be.visible')
+
+        cy.tick(2999)
+        cy.get('.error')
+            .should('be.visible')
+
+        cy.tick(1)
+        cy.get('.error')
+            .should('not.be.visible')
+    })
+
+    it('exibe e esconde as mensagens de sucesso e erro usando o .invoke', function() {
+        cy.get('.success')
+          .should('not.be.visible')
+          .invoke('show')
+          .should('be.visible')
+          .and('contain', 'Mensagem enviada com sucesso.')
+          .invoke('hide')
+          .should('not.be.visible')
+        cy.get('.error')
+          .should('not.be.visible')
+          .invoke('show')
+          .should('be.visible')
+          .and('contain', 'Valide os campos obrigatórios!')
+          .invoke('hide')
+          .should('not.be.visible')
+      })
+
+    it('preenche a area de texto usando o comando invoke', function() {
+        const longText = Cypress._.repeat('123', 50)
+        cy.get('#open-text-area')
+            .invoke('val', longText)
+            .should('have.value', longText)
+    })
+
+    it('faz uma requisição HTTP', function() {
+        cy.request('https://cac-tat.s3.eu-central-1.amazonaws.com/index.html')
+            .should(function(response) {
+                const { status, statusText, body } = response
+                expect(status).to.be.equal(200)
+                expect(statusText).to.be.equal('OK')
+                expect(body).to.include('CAC TAT')
+            })
+    })
+
+    it.only('gato está visível', function() {
+        cy.get('#cat')
+            .should('not.be.visible')    
+            .invoke('show')
+            .should('be.visible')
+    })
 })
   
